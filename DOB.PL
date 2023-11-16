@@ -1,8 +1,14 @@
-born(jan, 20,3,1977).
-born(jeroen, 2,2,1992).
-born(joris, 17,3,1995).
-born(jelle, 1,1,2004).
-born(jesus, 24,12,2000).
-born(joop, 30,4,1989).
-born(jannecke, 17,3,1993).
-born(jaap, 16,11,1995).
+% Database facts
+dob(john, '1990-05-15').
+dob(susan, '1985-11-22').
+dob(mike, '2000-03-10').
+dob(emma, '1998-08-05').
+dob(david, '1975-02-18').
+
+% Query to retrieve the date of birth for a given person
+get_dob(Person, DateOfBirth) :-
+    dob(Person, DateOfBirth).
+
+% Example usage:
+% To find the date of birth for 'john', you can query:
+% ?- get_dob(john, Date).
