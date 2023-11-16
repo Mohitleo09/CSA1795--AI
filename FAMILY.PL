@@ -1,23 +1,40 @@
-female(pam).%clauses
-female(liz).
-female(pat).
-female(ann).
-
-male(jim).
+% Facts representing individuals
+male(john).
 male(bob).
 male(tom).
-male(peter).
+female(lisa).
+female(amy).
+female(sara).
 
-parent(pam,bob).
-parent(tom,bob).
-parent(tom,liz).
-parent(bob,ann).
-parent(bob,pat).
-parent(pat,jinm).
-parent(bob,peter).
-parent(peter,jim).
+% Parent relationships
+parent(john, bob).
+parent(john, lisa).
+parent(bob, tom).
+parent(lisa, amy).
+parent(lisa, sara).
 
-mother(X,Y):-parent(X,Y),female(x).
-father(X,Y):-parent(X,Y),male(X).
-sister(X,Y):-parent(Z,X),parent(Z,Y),female(X),X\==Y.
-brother(X,Y):-parent(Z,X),parent(Z,Y),male(X),X\==Y.
+% Rules for determining the child, mother, and father relationships
+child(X, Y) :- parent(Y, X).
+mother(X, Y) :- female(X), parent(X, Y).
+father(X, Y) :- male(X), parent(X, Y).
+
+% Rules for determining siblings and sisters
+siblings(X, Y) :- parent(Z, X), parent(Z, Y), X \= Y.
+sister(X, Y) :- female(X), siblings(X, Y).
+
+% Grandparent relationship
+grandparent(X, Z) :- parent(X, Y), parent(Y, Z).
+
+% Ancestor relationship
+ancestor(X, Z) :- parent(X, Z).
+ancestor(X, Z) :- parent(X, Y), ancestor(Y, Z).
+
+
+?- mother(X, tom).
+% X = lisa
+
+?- siblings(amy, sara).
+% true
+
+?- grandparent(X, amy).
+% X = john
