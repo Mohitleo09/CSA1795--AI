@@ -1,23 +1,18 @@
-% Facts
+% Define facts about animals and their characteristics
 has_fur(dog).
 has_fur(cat).
-has_tail(cat).
-chases(cat, mouse).
+lays_eggs(chicken).
+gives_milk(dog).
 
-% Rules
-mammal(X) :- has_fur(X).
-predator(X) :- chases(X, Y), animal(Y).
-animal(X) :- has_fur(X).
-animal(X) :- has_tail(X).
+% Define rules for inferring whether an animal is a mammal
+mammal(X) :- has_fur(X), gives_milk(X).
+mammal(X) :- has_fur(X), not(lays_eggs(X)).
 
 % Forward chaining rule
-forward_chaining(X) :- findall(Y, (clause(X, Y), \+fact(Y)), NewFacts), assert_all(NewFacts), member(X, NewFacts).
+forward_chain :- mammal(X), write(X), write(' is a mammal.'), nl, fail.
 
-% Utility predicate to assert all elements in a list
-assert_all([]).
-assert_all([H | T]) :- assertz(fact(H)), assert_all(T).
-
-% Example queries
-:- forward_chaining(mammal(cat)).
-:- forward_chaining(predator(cat)).
-:- forward_chaining(animal(dog)).
+% Queries to test forward chaining
+:- dynamic has_fur/1, lays_eggs/1, gives_milk/1.
+has_fur(cat). % Additional fact
+lays_eggs(chicken). % Additional fact
+forward_chain.
